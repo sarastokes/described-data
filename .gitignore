@@ -1,0 +1,10 @@
+## MATLAB
+*.asv
+*.m~
+
+## Development
+/dev
+
+## Misc
+*.DS_Store
+*.vscode
