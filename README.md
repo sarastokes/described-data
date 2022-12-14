@@ -1,5 +1,5 @@
 # described-data
-Package enabling the addition of metadata to MATLAB data types. Numeric data types and string are supported. 
+Package enabling the addition of metadata to MATLAB data types. Numeric data types and string are supported. Metadata are stored in a hidden property called "Metadata", which is a containers.Map. 
 
 This was written to provide a MATLAB representation of an HDF5 dataset with attributes but it may be useful in other contexts too. Concatenation of described datatypes is not supported and descriptions will be removed when adding, subtracting, etc with a non-described data type.
 
@@ -43,6 +43,7 @@ disp(describedData)
 
 % Clear all metadata
 describedData.clearMetadata();
+disp(describedData)
 % 3×3 double with no metadata
 
 % Revert to original MATLAB type - double() works too
