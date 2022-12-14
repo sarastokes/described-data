@@ -1,16 +1,16 @@
-classdef double < double & described.Descriptor 
-% MATLAB's double class with metadata
+classdef uint64 < uint64 & described.Descriptor 
+% MATLAB's uint64 class with metadata
 %
 % Constructor:
-%   obj = described.double(data, varargin)
+%   obj = described.uint64(data, varargin)
 %
 % Inputs:
-%   data        double
+%   data        uint64
 %   varargin    key/value pairs for Metadata
 %
 % Examples:
-%   obj = described.double(2)
-%   obj = described.double(2, 'Units', 'mV');
+%   obj = described.uint64(2)
+%   obj = described.uint64(2, 'Units', 'mV');
 %
 % See Also:
 %   describe, described.Descriptor
@@ -19,11 +19,11 @@ classdef double < double & described.Descriptor
 % -------------------------------------------------------------------------
 
     methods
-        function obj = double(data, varargin)
+        function obj = uint64(data, varargin)
             if nargin == 0
                 data = [];
             end
-            obj@double(data);
+            obj@uint64(data);
             obj@described.Descriptor(varargin{:}); 
         end
     end

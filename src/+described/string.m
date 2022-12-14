@@ -1,4 +1,4 @@
-classdef double < double & described.Descriptor 
+classdef string < string & described.Descriptor
 % MATLAB's double class with metadata
 %
 % Constructor:
@@ -19,12 +19,12 @@ classdef double < double & described.Descriptor
 % -------------------------------------------------------------------------
 
     methods
-        function obj = double(data, varargin)
+        function obj = string(data, varargin)
             if nargin == 0
                 data = [];
             end
-            obj@double(data);
-            obj@described.Descriptor(varargin{:}); 
+            obj@string(data);
+            obj@described.Descriptor(varargin{:});
         end
     end
 end
