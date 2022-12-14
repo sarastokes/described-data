@@ -16,7 +16,7 @@ classdef Descriptor < matlab.mixin.CustomDisplay
 %   Metadata            containers.Map
 %
 % Methods:
-%   setMetadata(obj, key, value)
+%   addMetadata(obj, key, value)
 %       Add one or more key/value pairs to metadata. If a key is already 
 %       present in the metadata it will be overwritten.
 %   removeMetadata(obj, key)
@@ -42,7 +42,7 @@ classdef Descriptor < matlab.mixin.CustomDisplay
 % By Sara Patterson, 2022 (described-data)
 % -------------------------------------------------------------------------
 
-    properties (Hidden, SetAccess = private)
+    properties (Hidden, SetAccess = protected)
         Metadata            % containers.Map holding the metadata
     end
 
@@ -86,11 +86,11 @@ classdef Descriptor < matlab.mixin.CustomDisplay
             % Add one or more key/value pairs to metadata
             %
             % Syntax:
-            %   setMetadata(obj, varargin)
+            %   addMetadata(obj, varargin)
             %
             % Examples:
-            %   setMetadata(obj, 'Units', 'mV')
-            %   setMetadata(obj, 'Units', 'mV', 'SomeOtherParam', 2)
+            %   addMetadata(obj, 'Units', 'mV')
+            %   addMetadata(obj, 'Units', 'mV', 'SomeOtherParam', 2)
             % -------------------------------------------------------------
             arguments
                 obj
@@ -104,6 +104,15 @@ classdef Descriptor < matlab.mixin.CustomDisplay
             for i = 1:numel(key)
                 obj.Metadata(key{i}) = value{i};
             end
+        end
+
+        function tf = isMetadataEqual(obj, other)
+            arguments
+                obj 
+                other       {mustBeA(other, 'described.Descriptor')}
+            end
+
+            tf = isequal(obj.Metadata, other.Metadata);
         end
 
         function removeMetadata(obj, keys)
@@ -182,9 +191,7 @@ classdef Descriptor < matlab.mixin.CustomDisplay
     % matlab.mixin.CustomDisplay methods
     methods (Access = protected)
         function propgrp = getPropertyGroups(obj)
-            if ~isscalar(obj) 
-                propgrp = getPropertyGroups@matlab.mixin.CustomDisplay(obj);
-            elseif isempty(obj.Metadata)
+            if isempty(obj.Metadata)
                 propgrp = [];
             else
                 propList = map2struct(obj.Metadata);
@@ -193,18 +200,14 @@ classdef Descriptor < matlab.mixin.CustomDisplay
         end
 
         function header = getHeader(obj)
-            if ~isscalar(obj)
-                header = getHeader@matlab.mixin.CustomDisplay;
+            classStr = matlab.mixin.CustomDisplay.getClassNameForHeader(obj);
+            dimStr = matlab.mixin.CustomDisplay.convertDimensionsToString(obj);
+            if isempty(obj.Metadata)
+                headerStr = [dimStr, ' ', classStr, ' with no metadata'];
             else
-                classStr = matlab.mixin.CustomDisplay.getClassNameForHeader(obj);
-                dimStr = matlab.mixin.CustomDisplay.convertDimensionsToString(obj);
-                if isempty(obj.Metadata)
-                    headerStr = [dimStr, ' ', classStr, ' with no metadata'];
-                else
-                    headerStr = [dimStr, ' ', classStr, ' with metadata:'];
-                end
-                header = sprintf('%s\n',headerStr);
+                headerStr = [dimStr, ' ', classStr, ' with metadata:'];
             end
+            header = sprintf('%s\n',headerStr);
         end
     end
 end 
